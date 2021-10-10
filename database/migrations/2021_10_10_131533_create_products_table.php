@@ -12,9 +12,9 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->string('sku');
             $table->string('name');
-            $table->integer('price');
-            $table->float('tax_rate');
-            $table->float('taxed_price');
+            $table->unsignedDecimal('price');
+            $table->unsignedDecimal('tax_rate');
+            $table->unsignedDecimal('taxed_price');
 
             $table->timestamps();
         });
