@@ -6,7 +6,7 @@ use Database\Factories\ProductFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class GetProductsEndPoint extends TestCase
+class GetProductsEndPointTest extends TestCase
 {
     use RefreshDatabase;
 
