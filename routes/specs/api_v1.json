@@ -1,0 +1,252 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "POS",
+        "version": "1.0",
+        "summary": "fetch products of pos"
+    },
+    "servers": [
+        {
+            "url": "http://thepos.test/api/v1",
+            "description": "thePOS test server"
+        }
+    ],
+    "paths": {
+        "/prodcut": {
+            "get": {
+                "summary": "Get products",
+                "tags": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Product"
+                                    }
+                                },
+                                "examples": {
+                                    "example-1": {
+                                        "value": [
+                                            {
+                                                "sku": "978020137962",
+                                                "name": "ean13 product",
+                                                "price": 10,
+                                                "tax_rate": 15,
+                                                "taxed_price": 11.5
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "operationId": "get-prodcut"
+            }
+        },
+        "/sales-invoice": {
+            "post": {
+                "summary": "",
+                "operationId": "post-sales-invoice",
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Message"
+                                },
+                                "examples": {
+                                    "can not find product": {
+                                        "value": {
+                                            "code": 1,
+                                            "message": "Can not find product"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Already created invoice with this client id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Message"
+                                },
+                                "examples": {
+                                    "example-1": {
+                                        "value": {
+                                            "code": 2,
+                                            "message": "Already created invoice"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "create new sales invoice",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Sales-Invoice"
+                            },
+                            "examples": {}
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Product": {
+                "title": "Product",
+                "type": "object",
+                "examples": [
+                    {
+                        "sku": "978020137962",
+                        "name": "ean13 product",
+                        "price": 10,
+                        "tax_rate": 15,
+                        "taxed_price": 11.5
+                    },
+                    {
+                        "sku": "72527273070",
+                        "name": "UPCA prodcut",
+                        "price": 100,
+                        "tax_rate": 10,
+                        "taxed_price": 110
+                    }
+                ],
+                "properties": {
+                    "sku": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "price": {
+                        "type": "number"
+                    },
+                    "tax_rate": {
+                        "type": "number"
+                    },
+                    "taxed_price": {
+                        "type": "number"
+                    },
+                    "image": {
+                        "type": "string"
+                    },
+                    "product_group": {
+                        "$ref": "#/components/schemas/Product-Group"
+                    }
+                }
+            },
+            "Sales-Invoice-Item": {
+                "title": "Sales Invoice Item",
+                "type": "object",
+                "examples": [
+                    {
+                        "product": {
+                            "sku": "978020137962",
+                            "name": "ean13 product",
+                            "price": 10,
+                            "tax_rate": 15,
+                            "taxed_price": 11.5
+                        },
+                        "quantity": 10
+                    },
+                    {
+                        "product": {
+                            "sku": "72527273070",
+                            "name": "UPCA prodcut",
+                            "price": 100,
+                            "tax_rate": 10,
+                            "taxed_price": 110
+                        },
+                        "quantity": 3
+                    }
+                ],
+                "properties": {
+                    "product": {
+                        "$ref": "#/components/schemas/Product"
+                    },
+                    "quantity": {
+                        "type": "number"
+                    }
+                }
+            },
+            "Sales-Invoice": {
+                "title": "Sales-Invoice",
+                "type": "object",
+                "examples": [],
+                "properties": {
+                    "client-id": {
+                        "type": "number"
+                    },
+                    "items": {
+                        "$ref": "#/components/schemas/Sales-Invoice-Item"
+                    }
+                }
+            },
+            "Message": {
+                "title": "Message",
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer"
+                    },
+                    "message": {
+                        "type": "string"
+                    }
+                },
+                "examples": [
+                    {
+                        "code": 1,
+                        "message": "Can not find product"
+                    }
+                ]
+            },
+            "Product-Group": {
+                "title": "Product-Group",
+                "type": "object",
+                "examples": [
+                    {
+                        "id": 10,
+                        "name": "products",
+                        "parent": 1,
+                        "is_group": false,
+                        "disabled": true
+                    }
+                ],
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "parent": {
+                        "type": "number"
+                    },
+                    "is_group": {
+                        "type": "boolean"
+                    },
+                    "disabled": {
+                        "type": "boolean"
+                    }
+                }
+            }
+        },
+        "securitySchemes": {}
+    }
+}
