@@ -26,35 +26,50 @@
                                 },
                                 "examples": {
                                     "example-1": {
-                                        "data": [
-                                            {
-                                                "sku": "978020137962",
-                                                "name": "ean13 product",
-                                                "price": 10,
-                                                "tax_rate": 15,
-                                                "taxed_price": 11.5
+                                        "value": {
+                                            "data": [
+                                                {
+                                                    "sku": "978020137962",
+                                                    "name": "ean13 product",
+                                                    "price": 10,
+                                                    "tax_rate": 15,
+                                                    "taxed_price": 11.5
+                                                }
+                                            ],
+                                            "links": {
+                                                "links": {
+                                                    "first": "http://thepos.test/api/v1/products?page=1",
+                                                    "last": "http://thepos.test/api/v1/products?page=1"
+                                                }
+                                            },
+                                            "meta": {
+                                                "current_page": 1,
+                                                "from": 1,
+                                                "last_page": 1,
+                                                "path": "http://thepos.test/api/v1/products",
+                                                "per_page": 15,
+                                                "to": 5,
+                                                "total": 5
                                             }
-                                        ],
-                                        "links": {
-                                            "first": "http://thepos.test/api/v1/products?page=1",
-                                            "last": "http://thepos.test/api/v1/products?page=1"
-                                        },
-                                        "meta": {
-                                            "current_page": 1,
-                                            "from": 1,
-                                            "last_page": 1,
-                                            "path": "http://thepos.test/api/v1/products",
-                                            "per_page": 15,
-                                            "to": 5,
-                                            "total": 5
                                         }
                                     }
                                 }
                             }
                         }
                     }
-                }
-            }
+                },
+                "parameters": [
+                    {
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "in": "query",
+                        "name": "page",
+                        "description": "page number"
+                    }
+                ]
+            },
+            "parameters": []
         },
         "/sales-invoices": {
             "post": {
@@ -132,7 +147,35 @@
                     "meta": {
                         "$ref": "#/components/schemas/PaginationMeta"
                     }
-                }
+                },
+                "examples": [
+                    {
+                        "data": [
+                            {
+                                "sku": "978020137962",
+                                "name": "ean13 product",
+                                "price": 10,
+                                "tax_rate": 15,
+                                "taxed_price": 11.5
+                            }
+                        ],
+                        "links": {
+                            "links": {
+                                "first": "http://thepos.test/api/v1/products?page=1",
+                                "last": "http://thepos.test/api/v1/products?page=1"
+                            }
+                        },
+                        "meta": {
+                            "current_page": 1,
+                            "from": 1,
+                            "last_page": 1,
+                            "path": "http://thepos.test/api/v1/products",
+                            "per_page": 15,
+                            "to": 5,
+                            "total": 5
+                        }
+                    }
+                ]
             },
             "PaginationLinks": {
                 "title": "PaginationLinks",
@@ -156,7 +199,15 @@
                             "null"
                         ]
                     }
-                }
+                },
+                "examples": [
+                    {
+                        "links": {
+                            "first": "http://thepos.test/api/v1/products?page=1",
+                            "last": "http://thepos.test/api/v1/products?page=1"
+                        }
+                    }
+                ]
             },
             "PaginationMeta": {
                 "title": "PaginationMeta",
@@ -183,7 +234,18 @@
                     "total": {
                         "type": "number"
                     }
-                }
+                },
+                "examples": [
+                    {
+                        "current_page": 1,
+                        "from": 1,
+                        "last_page": 1,
+                        "path": "http://thepos.test/api/v1/products",
+                        "per_page": 15,
+                        "to": 5,
+                        "total": 5
+                    }
+                ]
             },
             "Product": {
                 "title": "Product",
@@ -265,13 +327,32 @@
             "SalesInvoice": {
                 "title": "SalesInvoice",
                 "type": "object",
-                "examples": [],
+                "examples": [
+                    {
+                        "client_id": 0,
+                        "items": [
+                            {
+                                "product": {
+                                    "sku": "978020137962",
+                                    "name": "ean13 product",
+                                    "price": 10,
+                                    "tax_rate": 15,
+                                    "taxed_price": 11.5
+                                },
+                                "quantity": 10
+                            }
+                        ]
+                    }
+                ],
                 "properties": {
                     "client_id": {
                         "type": "number"
                     },
                     "items": {
-                        "$ref": "#/components/schemas/SalesInvoiceItem"
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SalesInvoiceItem"
+                        }
                     }
                 }
             },
