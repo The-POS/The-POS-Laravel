@@ -1,6 +1,7 @@
-[![GitHub issues](https://img.shields.io/github/issues-closed/The-POS/The-POS-Laravel)](https://github.com/The-POS/The-POS-Laravel)
+[![CI](https://github.com/The-POS/The-POS-Laravel/actions/workflows/ci.yml/badge.svg)](https://github.com/The-POS/The-POS-Laravel/actions/workflows/ci.yml)[![GitHub issues](https://img.shields.io/github/issues-closed/The-POS/The-POS-Laravel)](https://github.com/The-POS/The-POS-Laravel)
 [![GitHub PR](https://img.shields.io/github/issues-pr/The-POS/The-POS-Laravel)](https://github.com/The-POS/The-POS-Laravel)
 [![GitHub Forks](https://img.shields.io/github/forks/The-POS/The-POS-Laravel?style=social)](https://github.com/The-POS/The-POS-Laravel)
+
 
 ## Contributors
 [![GitHub Contributors](https://img.shields.io/github/contributors/The-POS/The-POS-Laravel)](https://github.com/The-POS/The-POS-Laravel)
