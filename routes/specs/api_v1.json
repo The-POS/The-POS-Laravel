@@ -7,29 +7,26 @@
     },
     "servers": [
         {
-            "url": "http://thepos.test/api/v1",
+            "url": "http://thepos.test/",
             "description": "thePOS test server"
         }
     ],
     "paths": {
-        "/prodcut": {
+        "/api/v1/products": {
             "get": {
                 "summary": "Get products",
-                "tags": [],
+                "operationId": "ProductController@index",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/Product"
-                                    }
+                                    "$ref": "#/components/schemas/ProductPaginator"
                                 },
                                 "examples": {
                                     "example-1": {
-                                        "value": [
+                                        "data": [
                                             {
                                                 "sku": "978020137962",
                                                 "name": "ean13 product",
@@ -37,20 +34,42 @@
                                                 "tax_rate": 15,
                                                 "taxed_price": 11.5
                                             }
-                                        ]
+                                        ],
+                                        "links": {
+                                            "first": "http://thepos.test/api/v1/products?page=1",
+                                            "last": "http://thepos.test/api/v1/products?page=1"
+                                        },
+                                        "meta": {
+                                            "current_page": 1,
+                                            "from": 1,
+                                            "last_page": 1,
+                                            "path": "http://thepos.test/api/v1/products",
+                                            "per_page": 15,
+                                            "to": 5,
+                                            "total": 5
+                                        }
                                     }
                                 }
                             }
                         }
                     }
-                },
-                "operationId": "get-prodcut"
+                }
             }
         },
-        "/sales-invoice": {
+        "/sales-invoices": {
             "post": {
-                "summary": "",
-                "operationId": "post-sales-invoice",
+                "summary": "Create new sales invoice",
+                "operationId": "SalesInvoiceController@store",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SalesInvoice"
+                            },
+                            "examples": {}
+                        }
+                    }
+                },
                 "responses": {
                     "201": {
                         "description": "Created"
@@ -91,23 +110,81 @@
                             }
                         }
                     }
-                },
-                "description": "create new sales invoice",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/Sales-Invoice"
-                            },
-                            "examples": {}
-                        }
-                    }
                 }
             }
         }
     },
     "components": {
         "schemas": {
+            "ProductPaginator": {
+                "title": "ProductPaginator",
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Product"
+                        }
+                    },
+                    "links": {
+                        "$ref": "#/components/schemas/PaginationLinks"
+                    },
+                    "meta": {
+                        "$ref": "#/components/schemas/PaginationMeta"
+                    }
+                }
+            },
+            "PaginationLinks": {
+                "title": "PaginationLinks",
+                "type": "object",
+                "properties": {
+                    "first": {
+                        "type": "string"
+                    },
+                    "last": {
+                        "type": "string"
+                    },
+                    "prev": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "next": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    }
+                }
+            },
+            "PaginationMeta": {
+                "title": "PaginationMeta",
+                "type": "object",
+                "properties": {
+                    "current_page": {
+                        "type": "number"
+                    },
+                    "from": {
+                        "type": "number"
+                    },
+                    "last_page": {
+                        "type": "number"
+                    },
+                    "path": {
+                        "type": "string"
+                    },
+                    "per_page": {
+                        "type": "number"
+                    },
+                    "to": {
+                        "type": "number"
+                    },
+                    "total": {
+                        "type": "number"
+                    }
+                }
+            },
             "Product": {
                 "title": "Product",
                 "type": "object",
@@ -147,11 +224,11 @@
                         "type": "string"
                     },
                     "product_group": {
-                        "$ref": "#/components/schemas/Product-Group"
+                        "$ref": "#/components/schemas/ProductGroup"
                     }
                 }
             },
-            "Sales-Invoice-Item": {
+            "SalesInvoiceItem": {
                 "title": "Sales Invoice Item",
                 "type": "object",
                 "examples": [
@@ -185,16 +262,16 @@
                     }
                 }
             },
-            "Sales-Invoice": {
-                "title": "Sales-Invoice",
+            "SalesInvoice": {
+                "title": "SalesInvoice",
                 "type": "object",
                 "examples": [],
                 "properties": {
-                    "client-id": {
+                    "client_id": {
                         "type": "number"
                     },
                     "items": {
-                        "$ref": "#/components/schemas/Sales-Invoice-Item"
+                        "$ref": "#/components/schemas/SalesInvoiceItem"
                     }
                 }
             },
@@ -216,8 +293,8 @@
                     }
                 ]
             },
-            "Product-Group": {
-                "title": "Product-Group",
+            "ProductGroup": {
+                "title": "ProductGroup",
                 "type": "object",
                 "examples": [
                     {
